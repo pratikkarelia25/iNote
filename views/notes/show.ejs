@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iNote</title>
+</head>
+<body>
+    <h1>show</h1>
+    <p>Title: <%= note.title %> </p>
+    <p>Note: <%= note.note %> </p>
+    <form action="/notes/<%= note._id %>?_method=DELETE" method="post">
+    <button type="submit">Delete</button>
+    </form>
+</body>
+</html>
