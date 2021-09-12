@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="/" method="post">
-        <div>
-            <label for="title">title</label>
-            <input type="text" name="notes[title]" id="title">
-        </div>
-        <label for="note">Note</label>
-        <textarea name="notes[note]" id="note" cols="30" rows="10"></textarea>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+<%- layout('layout/boilerplate') %> 
+    
+<div class="row">
+    <div class="col-6 offset-3">
+        <h1 class="mb-5">New Note</h1>
+        <form action="/" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="notes[title]">
+              </div>
+              <div class="mb-3">
+                <label for="note" class="form-label">Note</label>
+                <textarea class="form-control" id="note" rows="3" name="notes[note]"></textarea>
+              </div>
+              <button type="submit" class="btn btn-success">Note It</button>
+        </form>
+    </div>
+</div>
