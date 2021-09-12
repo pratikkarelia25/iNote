@@ -46,6 +46,19 @@ app.get('/notes/:id',async(req,res)=>{
     res.render('notes/show',{note})
 })
 
+app.get('/notes/:id/edit',async(req,res)=>{
+    const {id} = req.params;
+    const note = await Note.findById(id);
+    res.render('notes/edit',{note})
+})
+
+app.put('/notes/:id',async(req,res)=>{
+    const {id} = req.params;
+    const note = await Note.findByIdAndUpdate(id,{...req.body.notes});
+    await note.save();
+    res.redirect(`/notes/${id}`);
+})
+
 app.delete('/notes/:id',async(req,res)=>{
     const id = req.params.id;
     await Note.findByIdAndDelete(id);

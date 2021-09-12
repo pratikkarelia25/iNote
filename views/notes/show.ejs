@@ -4,5 +4,6 @@
     <p>Title: <%= note.title %> </p>
     <p>Note: <%= note.note %> </p>
     <form action="/notes/<%= note._id %>?_method=DELETE" method="post">
-    <button type="submit">Delete</button>
+    <button class="btn btn-danger" type="submit">Delete</button>
+    <a class="btn btn-info text-white" href="/notes/<%= note._id %>/edit"  type="button">Edit</a>
     </form>
