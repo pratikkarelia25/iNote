@@ -1,9 +1,21 @@
 <%- layout('layout/boilerplate') %> 
 
     <h1>show</h1>
-    <p>Title: <%= note.title %> </p>
-    <p>Note: <%= note.note %> </p>
-    <form action="/notes/<%= note._id %>?_method=DELETE" method="post">
-    <button class="btn btn-danger" type="submit">Delete</button>
-    <a class="btn btn-info text-white" href="/notes/<%= note._id %>/edit"  type="button">Edit</a>
-    </form>
+    <div class="row">
+        <div class="col-md offset-5">
+            <div class="card" style="width: 25rem;">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= note.title %>
+                </h5>
+                <p class="card-text">
+                  <%= note.note %>
+                </p>
+              </div>
+            </div>
+            <form action="/notes/<%= note._id %>?_method=DELETE" method="post">
+            <button class="btn btn-danger" type="submit">Delete</button>
+            <a class="btn btn-info text-white" href="/notes/<%= note._id %>/edit"  type="button">Edit</a>
+            </form>
+        </div>
+    </div>
