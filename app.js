@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const Note = require('./models/notes');
 const methodOveride = require('method-override');
+const session = require('express-session');
 
 mongoose.connect('mongodb://localhost:27017/iNote');
 
@@ -21,6 +22,16 @@ app.set('views',path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOveride('_method'));
 
+const sessionConfig = {
+    secret: 'helo',
+    resave: false,
+    saveUninitialized:true,
+    cookie:{
+        expires: Date.now() + 1000*60*60*24*2,
+        maxAge: 1000*60*60*24*2
+    }
+}
+app.use(session(sessionConfig));
 app.get('/',(req,res)=>{
     res.render('home');
 })
