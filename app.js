@@ -7,6 +7,10 @@ const path = require('path');
 const Note = require('./models/notes');
 const methodOveride = require('method-override');
 const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local')
+const User = require('./models/users');
+const notesRoute = require('./routes/notes');
 
 mongoose.connect('mongodb://localhost:27017/iNote');
 
@@ -32,48 +36,34 @@ const sessionConfig = {
     }
 }
 app.use(session(sessionConfig));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use('/notes', notesRoute)
+
 app.get('/',(req,res)=>{
     res.render('home');
 })
-app.post('/',async (req,res)=>{
-    const note = new Note(req.body.notes);
-    await note.save();
-    res.redirect('/notes');
+
+app.get('/register',(req,res)=>{
+    res.render('auth/register')
 })
 
-app.get('/notes',async(req,res)=>{
-    const notes = await Note.find({});
-    res.render('notes/index',{notes});
-})
+app.post('/register',async(req,res)=>{
+    try{
+        const {email,username,password} = req.body;
+        const user = new User({email,username});
+        const registeredUser = await User.register(user,password);
+        res.redirect('/notes')
+    }
+    catch(e){
+        res.send(e.message);
+    }
 
-app.get('/notes/new',(req,res)=>{
-    res.render('notes/new');
-})
-
-
-app.get('/notes/:id',async(req,res)=>{
-    const {id} = req.params;
-    const note = await Note.findById(id);
-    res.render('notes/show',{note})
-})
-
-app.get('/notes/:id/edit',async(req,res)=>{
-    const {id} = req.params;
-    const note = await Note.findById(id);
-    res.render('notes/edit',{note})
-})
-
-app.put('/notes/:id',async(req,res)=>{
-    const {id} = req.params;
-    const note = await Note.findByIdAndUpdate(id,{...req.body.notes});
-    await note.save();
-    res.redirect(`/notes/${id}`);
-})
-
-app.delete('/notes/:id',async(req,res)=>{
-    const id = req.params.id;
-    await Note.findByIdAndDelete(id);
-    res.redirect('/notes');
 })
 
 app.listen(3000,(req,res)=>{
