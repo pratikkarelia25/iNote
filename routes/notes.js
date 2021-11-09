@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Note = require('../models/notes')
+const {isLoggedIn} = require('../middleware')
 
 router.get('/',async(req,res)=>{
     const notes = await Note.find({});
@@ -13,7 +14,7 @@ router.post('/',async (req,res)=>{
     res.redirect('/notes');
 })
 
-router.get('/new',(req,res)=>{
+router.get('/new',isLoggedIn,(req,res)=>{
     res.render('notes/new');
 })
 

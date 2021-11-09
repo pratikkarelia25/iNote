@@ -11,6 +11,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local')
 const User = require('./models/users');
 const notesRoute = require('./routes/notes');
+const flash = require('connect-flash');
 
 mongoose.connect('mongodb://localhost:27017/iNote');
 
@@ -43,8 +44,15 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use('/notes', notesRoute)
+app.use(flash());
 
+app.use((req,res,next)=>{
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+
+app.use('/notes', notesRoute)
 app.get('/',(req,res)=>{
     res.render('home');
 })
@@ -59,11 +67,19 @@ app.post('/register',async(req,res)=>{
         const user = new User({email,username});
         const registeredUser = await User.register(user,password);
         res.redirect('/notes')
+    }catch(e){
+        req.flash('error',e.message);
+        res.redirect('/register')
     }
-    catch(e){
-        res.send(e.message);
-    }
+})
 
+app.get('/login',(req,res)=>{
+    res.render('auth/login')
+})
+
+app.post('/login',passport.authenticate('local',{failureFlash:true,failureRedirect:'/login'}),(req,res)=>{
+    req.flash('success','Welcome Back')
+    res.redirect('/notes')
 })
 
 app.listen(3000,(req,res)=>{
