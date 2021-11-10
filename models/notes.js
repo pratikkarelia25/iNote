@@ -3,9 +3,8 @@ const {Schema} = mongoose;
 
 const noteSchema = new Schema({
     user: {
-        required: true,
-        type: String,
-        default: 'Pratik'
+        type: Schema.Types.ObjectId,
+        ref: "User"
     },
     title: String,
     note: String
