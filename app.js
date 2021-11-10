@@ -47,6 +47,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use(flash());
 
 app.use((req,res,next)=>{
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
@@ -61,12 +62,16 @@ app.get('/register',(req,res)=>{
     res.render('auth/register')
 })
 
-app.post('/register',async(req,res)=>{
+app.post('/register',async(req,res,next)=>{
     try{
         const {email,username,password} = req.body;
         const user = new User({email,username});
         const registeredUser = await User.register(user,password);
-        res.redirect('/notes')
+        req.login(registeredUser,(err)=>{
+            if(err) next(err);
+            req.flash('success', 'Successfully Registered')
+            res.redirect('/notes')
+        })
     }catch(e){
         req.flash('error',e.message);
         res.redirect('/register')
@@ -80,6 +85,12 @@ app.get('/login',(req,res)=>{
 app.post('/login',passport.authenticate('local',{failureFlash:true,failureRedirect:'/login'}),(req,res)=>{
     req.flash('success','Welcome Back')
     res.redirect('/notes')
+})
+
+app.get('/logout',(req,res)=>{
+    req.logOut();
+    req.flash('success','Successfully logged out');
+    res.redirect('/')
 })
 
 app.listen(3000,(req,res)=>{

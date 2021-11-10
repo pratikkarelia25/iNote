@@ -10,6 +10,15 @@
           <a class="nav-link" href="/notes">Notes</a>
           <a class="nav-link" href="/notes/new">New Note</a>
         </div>
+        <div class="navbar-nav ml-auto">
+          <% if(!currentUser){ %> 
+          <a class="nav-link" href="/register">Register</a>
+          <a class="nav-link" href="/login">Login</a>
+          <% }else{ %>
+          <!-- <p><%= currentUser.username %> </p> -->
+          <a class="nav-link" href="/logout">Logout</a>
+          <% } %> 
+        </div>
       </div>
     </div>
   </nav>
