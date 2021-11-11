@@ -26,6 +26,7 @@ app.set("view engine", "ejs");
 app.set('views',path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOveride('_method'));
+app.use(express.static(__dirname+"/public"));
 
 const sessionConfig = {
     secret: 'helo',
