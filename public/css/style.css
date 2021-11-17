@@ -1,0 +1,19 @@
+.navbar{
+    box-shadow: 2px 0 10px #000;
+}
+
+.navbar .navbar-brand{
+    color: black;
+    /* background-image: url('../img/iNote.png'); */
+}
+
+.navbar .nav-link{
+    color: black;
+    margin-left: 10px;
+    margin-top: 2px;
+    transition: padding-top 250ms, color 250ms;
+}
+.navbar .nav-link:hover{
+    color: blue;
+    padding-top: 1px;
+}
